@@ -9,8 +9,9 @@ const usersRouter = require('./routes/users');
 const commentsRouter = require('./routes/comments');
 
 const app = express();
-app.set('port', process.env.PORT || 3001);
-app.set('view engine', 'html');
+
+app.set('port', process.env.PORT || 3001);  // port
+app.set('view engine', 'html'); // view 엔진
 
 nunjucks.configure('views', {
   express: app,
@@ -18,7 +19,7 @@ nunjucks.configure('views', {
 });
 
 
-// * Sequelize로 DB 연결
+// * Sequelize로 DB 연결 -> 테이블 없는경우 생성함
 sequelize.sync({ force: false })
   .then(() => {
     console.log('데이터베이스 연결 성공');
@@ -30,10 +31,11 @@ sequelize.sync({ force: false })
 
 
 app.use(morgan('dev'));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));  // 정적 파일
+app.use(express.json());  // request json 요청
+app.use(express.urlencoded({ extended: false })); // request form 요청
 
+// 컨트롤러
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/comments', commentsRouter);
