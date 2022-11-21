@@ -6,18 +6,18 @@ const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');   // 최대한 위에
 const passport = require('passport');
+
 dotenv.config();
-const pageRouter = require('./routes/page');
+const v1 = require('./routes/v1');
 const authRouter = require('./routes/auth');
-const postRouter = require('./routes/post');
-const userRouter = require('./routes/user');
+const indexRouter = require('./routes');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 
 
 const app = express();
 
-app.set('port', process.env.PORT || 8001);
+app.set('port', process.env.PORT || 8002);
 app.set('view engine', 'html');
 
 
@@ -66,24 +66,10 @@ app.use(passport.session());    // 로그인후 요청때 -> 디시리얼라이�
 
 
 // * 컨트롤러
-app.use('/', pageRouter);
+app.use('/v1', v1);
+
 app.use('/auth', authRouter);
-app.use('/post', postRouter);
-app.use('/user', userRouter);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.use('/', indexRouter);
 
 
 
